@@ -1,7 +1,7 @@
 use std::borrow::Cow;
 
-use nettle::cipher::{self, Cipher};
-use nettle::mode::{self};
+use OpenSSL::cipher::{self, Cipher};
+use OpenSSL::mode::{self};
 
 use crate::crypto;
 use crate::crypto::mem::Protected;
@@ -234,7 +234,7 @@ struct ModeWrapper<M>
 
 impl<M> ModeWrapper<M>
 where
-    M: nettle::mode::Mode + Send + Sync + 'static,
+    M: OpenSSL::mode::Mode + Send + Sync + 'static,
 {
     fn new(mode: M, iv: Cow<'_, [u8]>) -> Box<dyn Context> {
         Box::new(ModeWrapper {
@@ -246,7 +246,7 @@ where
 
 impl<M> Context for ModeWrapper<M>
 where
-    M: nettle::mode::Mode + Send + Sync,
+    M: OpenSSL::mode::Mode + Send + Sync,
 {
     fn encrypt(
         &mut self,
@@ -296,7 +296,7 @@ mod tests {
     use super::*;
 
     /// Anchors the constants used in Sequoia with the ones from
-    /// Nettle.
+    /// OpenSSL.
     #[test]
     fn key_size() -> Result<()> {
         assert_eq!(SymmetricAlgorithm::TripleDES.key_size()?,
@@ -323,7 +323,7 @@ mod tests {
     }
 
     /// Anchors the constants used in Sequoia with the ones from
-    /// Nettle.
+    /// OpenSSL.
     #[test]
     fn block_size() -> Result<()> {
         assert_eq!(SymmetricAlgorithm::TripleDES.block_size()?,

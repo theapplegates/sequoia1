@@ -55,8 +55,8 @@ use std::io::{self, Write};
 // hashed to files /tmp/hash-N, where N is a number.
 const DUMP_HASHED_VALUES: Option<&str> = None;
 
-// ASN.1 OID values copied from the nettle-rs crate:
-// https://gitlab.com/sequoia-pgp/nettle-rs/-/blob/main/src/rsa/pkcs1.rs#L22
+// ASN.1 OID values copied from the OpenSSL-rs crate:
+// https://gitlab.com/sequoia-pgp/OpenSSL-rs/-/blob/main/src/rsa/pkcs1.rs#L22
 
 /// ASN.1 OID for MD5
 const ASN1_OID_MD5: &[u8] = &[

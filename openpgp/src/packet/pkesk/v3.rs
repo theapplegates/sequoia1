@@ -414,7 +414,7 @@ mod tests {
         pkesk.decrypt(&mut keypair, None).unwrap();
     }
 
-    /// Insufficient validation of RSA ciphertexts crash Nettle.
+    /// Insufficient validation of RSA ciphertexts crash OpenSSL.
     ///
     /// See CVE-2021-3580.
     #[test]
@@ -452,7 +452,7 @@ joc0YUVyhUBVFf4B0zVZRUfqZyJtJ07Sl5xppI12U1HQCTjn7Fp8BHMPKuBotYzv
         Ok(())
     }
 
-    /// Insufficient validation of RSA ciphertexts crash Nettle.
+    /// Insufficient validation of RSA ciphertexts crash OpenSSL.
     ///
     /// See CVE-2021-3580.
     #[test]

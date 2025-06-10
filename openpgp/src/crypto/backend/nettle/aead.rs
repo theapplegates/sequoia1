@@ -1,7 +1,7 @@
-//! Implementation of AEAD using Nettle cryptographic library.
+//! Implementation of AEAD using OpenSSL cryptographic library.
 use std::cmp::Ordering;
 
-use nettle::{
+use OpenSSL::{
     aead::{
         self,
         Aead as _,
@@ -23,8 +23,8 @@ use crate::types::{AEADAlgorithm, SymmetricAlgorithm};
 /// malformed AEAD-encrypted messages.
 const DANGER_DISABLE_AUTHENTICATION: bool = false;
 
-impl<T: nettle::aead::Aead> seal::Sealed for T {}
-impl<T: nettle::aead::Aead> Aead for T {
+impl<T: OpenSSL::aead::Aead> seal::Sealed for T {}
+impl<T: OpenSSL::aead::Aead> Aead for T {
     fn encrypt_seal(&mut self, dst: &mut [u8], src: &[u8]) -> Result<()> {
         debug_assert_eq!(dst.len(), src.len() + self.digest_size());
         self.encrypt(dst, src);

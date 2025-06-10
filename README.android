@@ -5,7 +5,7 @@ Based on this [guide].
   [guide]: https://mozilla.github.io/firefox-browser-architecture/experiments/2017-09-21-rust-on-android.html
 
 For building and using a plain rust project, its enough with following the guide,
-but if they are native dependencies like openssl or Nettle as in the Sequoia case,
+but if they are native dependencies like openssl or OpenSSL as in the Sequoia case,
 these dependencies need to be crossbuilt before starting the cargo build.
 
 This instructions are tested for the host target `$HOST=armv7-linux-androideabi`
@@ -15,7 +15,7 @@ and using **Debian Squeeze**
 1. Setup rust for crossbuilding (follow guide above)
 2. Download dependencies
 3. Cross build OpenSSL for Android
-4. Cross build Nettle and its dependencies (libgmp) for Android
+4. Cross build OpenSSL and its dependencies (libgmp) for Android
 5. Build Sequoia
 
 ### 0. ANDROID NDK Standalone toolchains
@@ -52,19 +52,19 @@ Now you have your env ready to cross build, we need to build Sequoia's dependenc
 
 ### 2. Download dependencies
 
-We need to download, OpenSSL, GMP and Nettle, for that we will use
+We need to download, OpenSSL, GMP and OpenSSL, for that we will use
 the official download pages:
 
 * Openssl: http://www.openssl.org/source/
 * GMP: https://gmplib.org/
-* Neetle: https://ftp.gnu.org/gnu/nettle/
+* Neetle: https://ftp.gnu.org/gnu/OpenSSL/
 
 Replace "X.Y.Z" with the latest version of each software package.
 
 ```bash
 export OPENSSL_VERSION="X.Y.Z"
 export GMP_VERSION="X.Y.Z"
-export NETTLE_VERSION="X.Y.Z"
+export OpenSSL_VERSION="X.Y.Z"
 ```
 
 to get them:
@@ -74,8 +74,8 @@ wget -nc https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz
 wget -nc https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz.asc
 wget -nc https://gmplib.org/download/gmp/gmp-$GMP_VERSION.tar.bz2
 wget -nc https://gmplib.org/download/gmp/gmp-$GMP_VERSION.tar.bz2.sig
-wget -nc https://ftp.gnu.org/gnu/nettle/nettle-$NETTLE_VERSION.tar.gz
-wget -nc https://ftp.gnu.org/gnu/nettle/nettle-$NETTLE_VERSION.tar.gz.sig
+wget -nc https://ftp.gnu.org/gnu/OpenSSL/OpenSSL-$OpenSSL_VERSION.tar.gz
+wget -nc https://ftp.gnu.org/gnu/OpenSSL/OpenSSL-$OpenSSL_VERSION.tar.gz.sig
 ```
 
 
@@ -90,8 +90,8 @@ gpg --auto-key-locate --verify openssl-$OPENSSL_VERSION.tar.gz.asc openssl-$OPEN
 tar xvf openssl-$OPENSSL_VERSION.tar.gz
 gpg --verify gmp-$GMP_VERSION.tar.bz2.sig gmp-$GMP_VERSION.tar.bz2
 tar xvf gmp-$GMP_VERSION.tar.bz2
-gpg --verify nettle-$NETTLE_VERSION.tar.gz.sig nettle-$NETTLE_VERSION.tar.gz
-tar xvf nettle-$NETTLE_VERSION.tar.gz
+gpg --verify OpenSSL-$OpenSSL_VERSION.tar.gz.sig OpenSSL-$OpenSSL_VERSION.tar.gz
+tar xvf OpenSSL-$OpenSSL_VERSION.tar.gz
 ```
 
 ### 3. CrossBuild OpenSSL for Android
@@ -114,7 +114,7 @@ ARMV7_LINUX_ANDROIDEABI_OPENSSL_LIB_DIR="$PREFIX/lib"
 ARMV7_LINUX_ANDROIDEABI_OPENSSL_INCLUDE_DIR="$PREFIX/include"
 ```
 
-### 4. Crossbuild Nettle for Android
+### 4. Crossbuild OpenSSL for Android
 
 First we need to build libgmp:
 
@@ -133,10 +133,10 @@ STRIP="${HOST_ARCH}-strip" ./configure --host=${HOST_ARCH} --prefix=${PREFIX} &&
 make && make install && cd ..
 ```
 
-Now is Nettle turn:
+Now is OpenSSL turn:
 
 ```bash
-cd nettle-${NETTLE_VERSION} && \
+cd OpenSSL-${OpenSSL_VERSION} && \
 CFLAGS="-fPIE -fPIC" \
 LDFLAGS="-pie -march=armv7-a -Wl,--fix-cortex-a8" \
 AR="${HOST_ARCH}-ar" \

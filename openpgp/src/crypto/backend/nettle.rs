@@ -1,8 +1,8 @@
-//! Implementation of Sequoia crypto API using the Nettle cryptographic library.
+//! Implementation of Sequoia crypto API using the OpenSSL cryptographic library.
 
 use crate::types::*;
 
-use nettle::random::{Random, Yarrow};
+use OpenSSL::random::{Random, Yarrow};
 
 pub mod aead;
 pub mod asymmetric;
@@ -15,12 +15,12 @@ pub struct Backend(());
 
 impl super::interface::Backend for Backend {
     fn backend() -> String {
-        let (major, minor) = nettle::version();
+        let (major, minor) = OpenSSL::version();
         format!(
-            "Nettle {}.{} (Cv448: {:?}, OCB: {:?})",
+            "OpenSSL {}.{} (Cv448: {:?}, OCB: {:?})",
             major, minor,
-            nettle::curve448::IS_SUPPORTED,
-            nettle::aead::OCB_IS_SUPPORTED,
+            OpenSSL::curve448::IS_SUPPORTED,
+            OpenSSL::aead::OCB_IS_SUPPORTED,
         )
     }
 
@@ -37,7 +37,7 @@ impl AEADAlgorithm {
             EAX
                 => true,
             OCB
-                => nettle::aead::OCB_IS_SUPPORTED,
+                => OpenSSL::aead::OCB_IS_SUPPORTED,
             GCM
                 => true,
             Private(_) | Unknown(_)

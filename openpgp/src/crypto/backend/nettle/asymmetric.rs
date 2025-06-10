@@ -4,7 +4,7 @@
 //! [`Decryptor`]: crate::crypto::Decryptor
 //! [`KeyPair`]: crate::crypto::KeyPair
 
-use nettle::{
+use OpenSSL::{
     curve25519,
     curve448,
     dsa,

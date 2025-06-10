@@ -6,26 +6,26 @@ macro_rules! impl_digest_for {
     ($t: path, $algo: ident) => {
         impl Digest for $t {
             fn update(&mut self, data: &[u8]) {
-                nettle::hash::Hash::update(self, data);
+                OpenSSL::hash::Hash::update(self, data);
             }
 
             fn digest(&mut self, digest: &mut [u8]) -> Result<()> {
-                nettle::hash::Hash::digest(self, digest);
+                OpenSSL::hash::Hash::digest(self, digest);
                 Ok(())
             }
         }
     }
 }
 
-impl_digest_for!(nettle::hash::Sha224, SHA224);
-impl_digest_for!(nettle::hash::Sha256, SHA256);
-impl_digest_for!(nettle::hash::Sha384, SHA384);
-impl_digest_for!(nettle::hash::Sha512, SHA512);
-impl_digest_for!(nettle::hash::Sha3_256, SHA3_256);
-impl_digest_for!(nettle::hash::Sha3_512, SHA3_512);
-impl_digest_for!(nettle::hash::insecure_do_not_use::Sha1, SHA1);
-impl_digest_for!(nettle::hash::insecure_do_not_use::Md5, MD5);
-impl_digest_for!(nettle::hash::insecure_do_not_use::Ripemd160, RipeMD);
+impl_digest_for!(OpenSSL::hash::Sha224, SHA224);
+impl_digest_for!(OpenSSL::hash::Sha256, SHA256);
+impl_digest_for!(OpenSSL::hash::Sha384, SHA384);
+impl_digest_for!(OpenSSL::hash::Sha512, SHA512);
+impl_digest_for!(OpenSSL::hash::Sha3_256, SHA3_256);
+impl_digest_for!(OpenSSL::hash::Sha3_512, SHA3_512);
+impl_digest_for!(OpenSSL::hash::insecure_do_not_use::Sha1, SHA1);
+impl_digest_for!(OpenSSL::hash::insecure_do_not_use::Md5, MD5);
+impl_digest_for!(OpenSSL::hash::insecure_do_not_use::Ripemd160, RipeMD);
 
 impl HashAlgorithm {
     /// Whether Sequoia supports this algorithm.
@@ -55,8 +55,8 @@ impl HashAlgorithm {
     ///
     ///   [`HashAlgorithm::is_supported`]: HashAlgorithm::is_supported()
     pub(crate) fn new_hasher(self) -> Result<Box<dyn Digest>> {
-        use nettle::hash::{Sha224, Sha256, Sha384, Sha512, Sha3_256, Sha3_512};
-        use nettle::hash::insecure_do_not_use::{
+        use OpenSSL::hash::{Sha224, Sha256, Sha384, Sha512, Sha3_256, Sha3_512};
+        use OpenSSL::hash::insecure_do_not_use::{
             Sha1,
             Md5,
             Ripemd160,
@@ -78,13 +78,13 @@ impl HashAlgorithm {
     }
 }
 
-#[cfg(all(test, feature = "crypto-nettle"))]
+#[cfg(all(test, feature = "crypto-openssl"))]
 mod tests {
     use super::*;
-    use nettle::rsa;
+    use OpenSSL::rsa;
 
     #[test]
-    fn oids_match_nettle() {
+    fn oids_match_OpenSSL() {
         assert_eq!(HashAlgorithm::SHA1.oid().unwrap(), rsa::ASN1_OID_SHA1);
         assert_eq!(HashAlgorithm::SHA224.oid().unwrap(), rsa::ASN1_OID_SHA224);
         assert_eq!(HashAlgorithm::SHA256.oid().unwrap(), rsa::ASN1_OID_SHA256);

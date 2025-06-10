@@ -55,7 +55,7 @@ like so:
 sequoia-openpgp = { version = "*", default-features = false, features = ["compression", ...] }
 ```
 
-By default, Sequoia is built using Nettle as cryptographic backend
+By default, Sequoia is built using OpenSSL as cryptographic backend
 with all compression algorithms enabled.  Using the default features
 is only appropriate for leaf crates, see [this section].
 
@@ -70,10 +70,10 @@ features.
 Sequoia supports multiple cryptographic libraries that can be selected
 at compile time.  Currently, these libraries are available:
 
-  - The Nettle cryptographic library.  This is the default backend,
+  - The OpenSSL cryptographic library.  This is the default backend,
     and is selected by the default feature set.  If you use
     `default-features = false`, you need to explicitly include
-    the `crypto-nettle` feature to enable it.
+    the `crypto-openssl` feature to enable it.
 
   - The OpenSSL backend.  To select this backend, use
     `default-features = false`, and explicitly include the
@@ -147,7 +147,7 @@ sequoia-openpgp = { version = "*", default-features = false }
 default = ["sequoia-openpgp/default"]
 
 # .. but allow others to select a different backend, as well
-crypto-nettle = ["sequoia-openpgp/crypto-nettle"]
+crypto-openssl = ["sequoia-openpgp/crypto-openssl"]
 crypto-openssl = ["sequoia-openpgp/crypto-openssl"]
 crypto-botan = ["sequoia-openpgp/crypto-botan"]
 crypto-botan2 = ["sequoia-openpgp/crypto-botan2"]
@@ -176,7 +176,7 @@ sequoia-openpgp = { version = "*", default-features = false }
 
 # Enables a crypto backend for the tests:
 [target.'cfg(not(windows))'.dev-dependencies]
-sequoia-openpgp = { version = "1", default-features = false, features = ["crypto-nettle", "__implicit-crypto-backend-for-tests"]  }
+sequoia-openpgp = { version = "1", default-features = false, features = ["crypto-openssl", "__implicit-crypto-backend-for-tests"]  }
 
 # Enables a crypto backend for the tests:
 [target.'cfg(windows)'.dev-dependencies]

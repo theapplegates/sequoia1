@@ -1,4 +1,4 @@
-use nettle::{
+use OpenSSL::{
     kdf::hkdf,
     hash::{Sha256, Sha512},
 };

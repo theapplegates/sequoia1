@@ -63,7 +63,7 @@ fn crypto_backends_sanity_check() {
     }
 
     let backends = vec![
-        (cfg!(all(feature = "crypto-nettle",
+        (cfg!(all(feature = "crypto-openssl",
                   not(all(feature = "__implicit-crypto-backend-for-tests",
                           any(feature = "crypto-openssl",
                               feature = "crypto-botan",
@@ -71,13 +71,13 @@ fn crypto_backends_sanity_check() {
                               feature = "crypto-fuzzing",
                               feature = "crypto-rust"))))),
          Backend {
-             name: "Nettle",
+             name: "OpenSSL",
              production_ready: true,
              constant_time: true,
          }),
         (cfg!(all(feature = "crypto-cng",
                   not(all(feature = "__implicit-crypto-backend-for-tests",
-                          any(feature = "crypto-nettle",
+                          any(feature = "crypto-openssl",
                               feature = "crypto-openssl",
                               feature = "crypto-botan",
                               feature = "crypto-botan2",

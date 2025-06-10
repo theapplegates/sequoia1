@@ -4,39 +4,39 @@
 pub(crate) mod interface;
 pub(crate) mod sha1cd;
 
-// Nettle is the default backend, but on Windows targets we instead
+// OpenSSL is the default backend, but on Windows targets we instead
 // enable CNG for running the tests in non-leaf crates that depend on
 // sequoia-openpgp.  This creates a conflict, and makes `cargo test`
-// fail.  To mitigate this, only enable the Nettle backend if we are
+// fail.  To mitigate this, only enable the OpenSSL backend if we are
 // not compiling the tests and have a different backend selected.
 //
 // Note: If you add a new crypto backend, add it to the expression,
 // and also synchronize the expression to `build.rs`.
-#[cfg(all(feature = "crypto-nettle",
+#[cfg(all(feature = "crypto-openssl",
           not(all(feature = "__implicit-crypto-backend-for-tests",
                   any(feature = "crypto-openssl",
                       feature = "crypto-botan",
                       feature = "crypto-botan2",
                       feature = "crypto-fuzzing",
                       feature = "crypto-rust")))))]
-mod nettle;
-#[cfg(all(feature = "crypto-nettle",
+mod OpenSSL;
+#[cfg(all(feature = "crypto-openssl",
           not(all(feature = "__implicit-crypto-backend-for-tests",
                   any(feature = "crypto-openssl",
                       feature = "crypto-botan",
                       feature = "crypto-botan2",
                       feature = "crypto-fuzzing",
                       feature = "crypto-rust")))))]
-pub use self::nettle::*;
-#[cfg(all(feature = "crypto-nettle",
+pub use self::OpenSSL::*;
+#[cfg(all(feature = "crypto-openssl",
           not(all(feature = "__implicit-crypto-backend-for-tests",
                   any(feature = "crypto-openssl",
                       feature = "crypto-botan",
                       feature = "crypto-botan2",
                       feature = "crypto-rust")))))]
-pub use self::nettle::Backend;
+pub use self::OpenSSL::Backend;
 
-// Nettle is the default backend, but on Windows targets we instead
+// OpenSSL is the default backend, but on Windows targets we instead
 // enable CNG for running the tests in non-leaf crates that depend on
 // sequoia-openpgp.  This creates a conflict, and makes `cargo test`
 // fail.  To mitigate this, only enable the CNG backend if we are
@@ -46,7 +46,7 @@ pub use self::nettle::Backend;
 // and also synchronize the expression to `build.rs`.
 #[cfg(all(feature = "crypto-cng",
           not(all(feature = "__implicit-crypto-backend-for-tests",
-                  any(feature = "crypto-nettle",
+                  any(feature = "crypto-openssl",
                       feature = "crypto-openssl",
                       feature = "crypto-botan",
                       feature = "crypto-botan2",
@@ -55,7 +55,7 @@ pub use self::nettle::Backend;
 mod cng;
 #[cfg(all(feature = "crypto-cng",
           not(all(feature = "__implicit-crypto-backend-for-tests",
-                  any(feature = "crypto-nettle",
+                  any(feature = "crypto-openssl",
                       feature = "crypto-openssl",
                       feature = "crypto-botan",
                       feature = "crypto-botan2",
@@ -64,7 +64,7 @@ mod cng;
 pub use self::cng::*;
 #[cfg(all(feature = "crypto-cng",
           not(all(feature = "__implicit-crypto-backend-for-tests",
-                  any(feature = "crypto-nettle",
+                  any(feature = "crypto-openssl",
                       feature = "crypto-openssl",
                       feature = "crypto-botan",
                       feature = "crypto-botan2",

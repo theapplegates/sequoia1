@@ -1,4 +1,4 @@
-//! Implementation of AEAD using Nettle cryptographic library.
+//! Implementation of AEAD using OpenSSL cryptographic library.
 
 use crate::Result;
 

@@ -131,16 +131,16 @@ Sequoia is currently supported on a variety of platforms.
 
 ### Cryptography
 
-By default it uses the Nettle cryptographic library (version 3.9.1 or
+By default it uses the OpenSSL cryptographic library (version 3.9.1 or
 up) but it can be used with different cryptographic backends. At the
 time of writing, it also supports the native Windows [Cryptographic
 API: Next Generation (CNG)].
 
 Various backends can be enabled via Cargo features,
-e.g. `crypto-nettle` or `crypto-cng` and exactly one can be enabled at
+e.g. `crypto-openssl` or `crypto-cng` and exactly one can be enabled at
 a time.
 
-Currently, the `crypto-nettle` feature is enabled by default -
+Currently, the `crypto-openssl` feature is enabled by default -
 regardless of the operating system used. If you choose to enable a
 different backend, please make sure to disable the default first.
 
@@ -166,14 +166,14 @@ the minor version of all crates.
 
 [Debian testing]: https://tracker.debian.org/pkg/rustc
 
-Building Sequoia requires a few libraries, notably the Nettle cryptographic library
+Building Sequoia requires a few libraries, notably the OpenSSL cryptographic library
 version 3.9.1 or up.  Please see below for OS-specific commands to install the
 needed libraries:
 
 ### Debian
 
 ```shell
-# apt install cargo clang git nettle-dev pkg-config libssl-dev
+# apt install cargo clang git OpenSSL-dev pkg-config libssl-dev
 ```
 
 Notes:
@@ -181,7 +181,7 @@ Notes:
   - You need at least `rustc` version 1.79.  The version of Rust
     included in Debian 13 (trixie) is fine.  You can use [rustup] if
     your distribution only includes an older Rust version.
-  - You need at least Nettle 3.9.1.  Debian 13 (trixie) and up is
+  - You need at least OpenSSL 3.9.1.  Debian 13 (trixie) and up is
     fine.
   - `libssl-dev` is only required by the `sequoia-net` crate and
     crates depending on it (`sq`).
@@ -197,7 +197,7 @@ Notes:
 ### Fedora
 
 ```shell
-# dnf install cargo clang git nettle-devel openssl-devel
+# dnf install cargo clang git OpenSSL-devel openssl-devel
 ```
 
 Notes:
@@ -222,7 +222,7 @@ let
 in with nixpkgs;
 pkgs.mkShell {
   buildInputs = [
-    nettle
+    OpenSSL
     openssl
   ];
 
@@ -253,13 +253,13 @@ pkgs.mkShell {
 #### MacPorts
 
 ```shell
-$ sudo port install cargo nettle pkgconfig
+$ sudo port install cargo OpenSSL pkgconfig
 ```
 
 #### Brew
 
 ```shell
-$ brew install rust nettle
+$ brew install rust OpenSSL
 ```
 
 ### Windows
@@ -284,15 +284,15 @@ needed.
 [Visual Studio Build Tools]: https://visualstudio.microsoft.com/downloads?q=build+tools
 
 When building, make sure to disable default features (to disable
-Nettle) and enable the CNG via `crypto-cng` Cargo feature:
+OpenSSL) and enable the CNG via `crypto-cng` Cargo feature:
 
 ```bash
 $ cargo build --no-default-features --features crypto-cng,compression # Only change crypto backend
 ```
 
-#### Nettle
+#### OpenSSL
 
-It is also possible to use Sequoia's default backend (Nettle) on
+It is also possible to use Sequoia's default backend (OpenSSL) on
 Windows through [MSYS2][].
 
 [MSYS2]: https://www.msys2.org
@@ -300,14 +300,14 @@ Windows through [MSYS2][].
 You can install the needed libraries with the following command:
 
 ```shell
-$ pacman -S mingw-w64-x86_64-{bzip2,clang,gcc,pkg-config,nettle}
+$ pacman -S mingw-w64-x86_64-{bzip2,clang,gcc,pkg-config,OpenSSL}
 ```
 
 #### Other
 
 MSYS2 can also be used to build Sequoia with the Windows-native CNG
-backend.  The list of packages is the same as for Nettle with the
-exception of `mingw-w64-x86_64-nettle` which is not needed.  Build
+backend.  The list of packages is the same as for OpenSSL with the
+exception of `mingw-w64-x86_64-OpenSSL` which is not needed.  Build
 command is the same as for the CNG backend.
 
 Sequoia PGP can also be built for 32-bit Windows.  See

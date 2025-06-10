@@ -1,6 +1,6 @@
 //! Elliptic Curve Diffie-Hellman.
 
-use nettle::{ecc, ecdh, random::Yarrow};
+use OpenSSL::{ecc, ecdh, random::Yarrow};
 
 use crate::{Error, Result};
 use crate::crypto::SessionKey;
@@ -31,7 +31,7 @@ pub fn encrypt<R>(recipient: &Key<key::PublicParts, R>,
                 // generate an ephemeral private key v.
 
                 // Note: ecc::Point and ecc::Scalar are cleaned up by
-                // nettle.
+                // OpenSSL.
                 let (Rx, Ry) = q.decode_point(curve)?;
                 let (R, v, field_sz) = match curve {
                     Curve::NistP256 => {
@@ -84,7 +84,7 @@ pub fn encrypt<R>(recipient: &Key<key::PublicParts, R>,
                              session_key, VB, &Sx.into())
             }
 
-            // Not implemented in Nettle
+            // Not implemented in OpenSSL
             Curve::BrainpoolP256 | Curve::BrainpoolP384 | Curve::BrainpoolP512 =>
                 Err(Error::UnsupportedEllipticCurve(curve.clone()).into()),
 
@@ -163,7 +163,7 @@ pub fn decrypt<R>(recipient: &Key<key::PublicParts, R>,
                     Sx.into()
                 }
 
-                // Not implemented in Nettle
+                // Not implemented in OpenSSL
                 Curve::BrainpoolP256 | Curve::BrainpoolP384 | Curve::BrainpoolP512 =>
                     return
                     Err(Error::UnsupportedEllipticCurve(curve.clone()).into()),
