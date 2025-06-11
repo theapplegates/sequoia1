@@ -94,12 +94,6 @@ fn crypto_backends_sanity_check() {
              production_ready: false,
              constant_time: false,
          }),
-        (cfg!(feature = "crypto-openssl"),
-         Backend {
-             name: "OpenSSL",
-             production_ready: true,
-             constant_time: true,
-         }),
         (cfg!(feature = "crypto-botan"),
          Backend {
              name: "Botan",

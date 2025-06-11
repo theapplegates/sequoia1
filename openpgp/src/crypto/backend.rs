@@ -19,22 +19,6 @@ pub(crate) mod sha1cd;
                       feature = "crypto-botan2",
                       feature = "crypto-fuzzing",
                       feature = "crypto-rust")))))]
-mod OpenSSL;
-#[cfg(all(feature = "crypto-openssl",
-          not(all(feature = "__implicit-crypto-backend-for-tests",
-                  any(feature = "crypto-openssl",
-                      feature = "crypto-botan",
-                      feature = "crypto-botan2",
-                      feature = "crypto-fuzzing",
-                      feature = "crypto-rust")))))]
-pub use self::OpenSSL::*;
-#[cfg(all(feature = "crypto-openssl",
-          not(all(feature = "__implicit-crypto-backend-for-tests",
-                  any(feature = "crypto-openssl",
-                      feature = "crypto-botan",
-                      feature = "crypto-botan2",
-                      feature = "crypto-rust")))))]
-pub use self::OpenSSL::Backend;
 
 // OpenSSL is the default backend, but on Windows targets we instead
 // enable CNG for running the tests in non-leaf crates that depend on
